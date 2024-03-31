@@ -1,0 +1,7 @@
+name: Devops Demo
+on: [push]
+jobs:
+  Devops-Demo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This is my Devops intern task!"

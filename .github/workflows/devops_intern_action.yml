@@ -1,7 +1,12 @@
-name: Devops Demo
+name: devops
 on: [push]
 jobs:
-  Devops-Demo:
+  first:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This is my Devops intern task!"
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v4
+      - name: Make test.sh executable
+        run: chmod +x test.sh
+      - name: Run test.sh
+        run: ./test.sh

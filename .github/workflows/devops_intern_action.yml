@@ -1,12 +1,32 @@
 name: devops
+env:
+  IMAGE_NAME: Ubuntu2204
 on: [push]
 jobs:
   first:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository to the runner
+      - name: Check Out Repository
         uses: actions/checkout@v4
-      - name: Make test.sh executable
+      - name: Make Test Script Executable
         run: chmod +x test.sh
-      - name: Run test.sh
+      - name: Run Test Script
         run: ./test.sh
+      - name: Login to Azure Service Principal
+        run: |
+          az login --service-principal \
+            --username ${{ secrets.SP_APP_ID }} \
+            --password ${{ secrets.SP_PASSWORD }} \
+            --tenant ${{ secrets.SP_TENANT }}
+      - name: Declare Virtual Machine Name
+        run: |
+          TODAY="$(date +'%d-%m-%Y')"
+          VM_NAME="devops-intern-vm-$TODAY"
+      - name: Create Virtual Machine in Azure
+        run: |
+          az vm create --name $VM_NAME \
+            --resource-group ${{ secrets.RG_NAME }} \
+            --image $IMAGE_NAME \
+            --generate-ssh-keys \
+            --admin-username ${{ secrets.ADMIN_USERNAME }} \
+            --admin-password ${{ secrets.ADMIN_PASSWORD }}

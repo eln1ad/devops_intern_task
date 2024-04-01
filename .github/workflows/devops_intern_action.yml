@@ -18,12 +18,10 @@ jobs:
             --username ${{ secrets.SP_APP_ID }} \
             --password ${{ secrets.SP_PASSWORD }} \
             --tenant ${{ secrets.SP_TENANT }}
-      - name: Declare Virtual Machine Name
+      - name: Create Virtual Machine in Azure
         run: |
           TODAY="$(date +'%d-%m-%Y')"
           VM_NAME="devops-intern-vm-$TODAY"
-      - name: Create Virtual Machine in Azure
-        run: |
           az vm create --name $VM_NAME \
             --resource-group ${{ secrets.RG_NAME }} \
             --image $IMAGE_NAME \
